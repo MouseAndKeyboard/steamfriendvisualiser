@@ -1,14 +1,5 @@
-import GraphVisualisationManager from '../components/GraphVisualisationManager'
-import DataManager from '../components/DataManager'
+import AppPage from '../components/App'
 
-
-const app = (props) => {
-    return (
-        <div>
-            <DataManager />
-            <GraphVisualisationManager />
-        </div>
-    );
-}
+const app = (props) => <AppPage/>
 
 export default app;

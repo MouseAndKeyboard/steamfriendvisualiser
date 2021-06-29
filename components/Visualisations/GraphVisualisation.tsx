@@ -1,6 +1,7 @@
+import styles from "./GraphVisualisation.module.css"
 
-const GraphVisualisation = ({bgColour}) => {
-    return (<svg width="100%" height="100%" background-color={bgColour}>
+const GraphVisualisation = (props) => {
+    return (<svg className={styles.mainView}>
 
 
     </svg>);
