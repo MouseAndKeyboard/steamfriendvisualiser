@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 import GraphVisualisation from './Visualisations/GraphVisualisation'
 
@@ -6,65 +6,49 @@ const GraphVisualisationManager = () => {
     const [vertices, setVertices] = useState<steamUser[]>([]);
     const [edges, setEdges] = useState<relationship[]>([]);
 
+    const [, updateState] = useState();
+    const forceUpdate = useCallback(() => updateState({}), []);
+
     useEffect(() => {
-        const initialVertexData = [
-            {"id":"76561198195623567"},
-            {"id":"76561198042607021"},
-            {"id":"76561198077279908"},
-            {"id":"76561198079221334"},
-            {"id":"76561198091581207"},
-            {"id":"76561198145748582"},
-            {"id":"76561198149819869"},
-            {"id":"76561198198977982"},
-            {"id":"76561198227441672"},
-            {"id":"76561198227920272"},
-            {"id":"76561198300991575"},
-            {"id":"76561198839610876"},
-            {"id":"76561198873921929"},
-            {"id":"76561198880198580"},
-            {"id":"76561198964253538"},
-            {"id":"76561198981630686"},
-            {"id":"76561198079221334"},
-            {"id":"76561198140119436"},
-            {"id":"76561198195623567"},
-            {"id":"76561198227920272"},
-            {"id":"76561198981630686"},
-            {"id":"76561199045911255"},
-            {"id":"76561199097982054"}]
-
-
+        const initialVertexData = [{"id":"76561198195623567"}]
         setVertices(initialVertexData);
 
-        const initialEdgeData = [
-            {"source":"76561198195623567","target":"76561198042607021","note":"friend"},
-            {"source":"76561198195623567","target":"76561198077279908","note":"friend"},
-            {"source":"76561198195623567","target":"76561198079221334","note":"friend"},
-            {"source":"76561198195623567","target":"76561198091581207","note":"friend"},
-            {"source":"76561198195623567","target":"76561198145748582","note":"friend"},
-            {"source":"76561198195623567","target":"76561198149819869","note":"friend"},
-            {"source":"76561198195623567","target":"76561198198977982","note":"friend"},
-            {"source":"76561198195623567","target":"76561198227441672","note":"friend"},
-            {"source":"76561198195623567","target":"76561198227920272","note":"friend"},
-            {"source":"76561198195623567","target":"76561198300991575","note":"friend"},
-            {"source":"76561198195623567","target":"76561198839610876","note":"friend"},
-            {"source":"76561198195623567","target":"76561198873921929","note":"friend"},
-            {"source":"76561198195623567","target":"76561198880198580","note":"friend"},
-            {"source":"76561198195623567","target":"76561198964253538","note":"friend"},
-            {"source":"76561198195623567","target":"76561198981630686","note":"friend"},
-            {"source":"76561198839610876","target":"76561198079221334","note":"friend"},
-            {"source":"76561198839610876","target":"76561198140119436","note":"friend"},
-            {"source":"76561198839610876","target":"76561198195623567","note":"friend"},
-            {"source":"76561198839610876","target":"76561198227920272","note":"friend"},
-            {"source":"76561198839610876","target":"76561198981630686","note":"friend"},
-            {"source":"76561198839610876","target":"76561199045911255","note":"friend"},
-            {"source":"76561198839610876","target":"76561199097982054","note":"friend"}
-        ];
+        const initialEdgeData = [];
         setEdges(initialEdgeData);
 
     }, [])
 
+    const addChildren = async (steamid: String) => {
+        const response = await fetch(`../api/steamuser?id=${steamid}`);
+        const data = await response.json()
+        const justVertices = data.map(o => {return { id: o.id } });
+        const edges = data.map(o => {return { source: steamid, target: o.id, note: 'friend' }});
+        setVertices((oldVertices) => {
+            let newArray = oldVertices;
+            justVertices.forEach(v => {
+                if (!newArray.some(o => o.id === v.id)) {
+                    newArray.push(v);
+                }
+            });
 
-    return (<GraphVisualisation vertices={vertices} edges={edges} width={1000} height={1000} />);
+            return newArray;
+        });
+
+
+        setEdges((oldEdges) => {
+            let newArray = oldEdges;
+            edges.forEach(x => {
+                if (!newArray.some(o => (o.source === x.source && o.target === x.target) || (o.source === x.target && o.target === x.source))) {
+                    newArray.push(x);
+                }
+            });
+            return newArray;
+        });
+
+        forceUpdate();
+    }
+
+    return (<GraphVisualisation vertices={vertices} edges={edges} width={1000} height={1000} addChildCallback={addChildren} />);
 }
 
 export default GraphVisualisationManager;

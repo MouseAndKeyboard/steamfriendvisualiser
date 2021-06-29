@@ -4,7 +4,7 @@ import { useD3 } from '../../hooks/useD3'
 import styles from "./GraphVisualisation.module.css"
 
 
-const GraphVisualisation = ({vertices, edges, width, height}) => {
+const GraphVisualisation = ({vertices, edges, width, height,  addChildCallback}) => {
     const ref = useD3(
         (svg) => {
             const links = edges.map(d => Object.create(d));
@@ -12,7 +12,7 @@ const GraphVisualisation = ({vertices, edges, width, height}) => {
 
             const simulation = d3.forceSimulation(nodes)
                                  .force('link', d3.forceLink(links).id(d => d.id))
-                                 .force('charge', d3.forceManyBody().strength(-1000))
+                                 .force('charge', d3.forceManyBody().strength(-100))
                                  .force('center', d3.forceCenter(width / 2, height / 2))
 
             const link = svg.append('g')
@@ -29,9 +29,12 @@ const GraphVisualisation = ({vertices, edges, width, height}) => {
                             .selectAll('circle')
                             .data(nodes)
                             .join('circle')
-                            .attr('r', 20)
+                            .attr('r', 12)
                             .attr('fill', '#aaa')
                             .call(drag(simulation))
+                            .on('dblclick', d => {
+                                addChildCallback(d.srcElement.__data__.id);
+                            });
 
             node.append('title')
                             .text(d => d.id);
