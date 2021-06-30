@@ -4,15 +4,20 @@ import { useD3 } from '../../hooks/useD3'
 import styles from "./GraphVisualisation.module.css"
 
 
-const GraphVisualisation = ({vertices, edges, width, height,  addChildCallback}) => {
+const GraphVisualisation = ({vertices, edges, width, height, addChildCallback}) => {
+
+    const radius = 17.5;
+
     const ref = useD3(
         (svg) => {
+            svg.selectAll('g').remove();
+
             const links = edges.map(d => Object.create(d));
             const nodes = vertices.map(d => Object.create(d));
 
             const simulation = d3.forceSimulation(nodes)
-                                 .force('link', d3.forceLink(links).id(d => d.id))
-                                 .force('charge', d3.forceManyBody().strength(-100))
+                                 .force('link', d3.forceLink(links).id(d => d.id).strength(1))
+                                 .force('charge', d3.forceManyBody().strength(-50))
                                  .force('center', d3.forceCenter(width / 2, height / 2))
 
             const link = svg.append('g')
@@ -29,7 +34,7 @@ const GraphVisualisation = ({vertices, edges, width, height,  addChildCallback})
                             .selectAll('circle')
                             .data(nodes)
                             .join('circle')
-                            .attr('r', 12)
+                            .attr('r', radius)
                             .attr('fill', '#aaa')
                             .call(drag(simulation))
                             .on('dblclick', d => {
@@ -39,14 +44,22 @@ const GraphVisualisation = ({vertices, edges, width, height,  addChildCallback})
             node.append('title')
                             .text(d => d.id);
 
-            simulation.on('tick', () => {
-                link.attr('x1', d => d.source.x)
-                    .attr('y1', d => d.source.y)
-                    .attr('x2', d => d.target.x)
-                    .attr('y2', d => d.target.y);
+            node.append("circle")
+                .attr("cx", 12.5)
+                .attr("cy", 0)
+                .attr("r", 17.5)
+                .style("fill", "transparent")
+                .style("stroke", "black")
+                .style("stroke-width", "2px");
 
-                node.attr('cx', d => d.x)
-                    .attr('cy', d => d.y);
+            simulation.on('tick', () => {
+                link.attr('x1', d => Math.max(radius, Math.min(width - radius, d.source.x)))
+                    .attr('y1', d => Math.max(radius, Math.min(height - radius, d.source.y)))
+                    .attr('x2', d => Math.max(radius, Math.min(width - radius, d.target.x)))
+                    .attr('y2', d => Math.max(radius, Math.min(height - radius, d.target.y)));
+
+                node.attr('cx', d => Math.max(radius, Math.min(width - radius, d.x)))
+                    .attr('cy', d => Math.max(radius, Math.min(height - radius, d.y)));
             });
         },
         [vertices.length, edges.length]

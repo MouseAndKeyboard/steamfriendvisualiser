@@ -48,7 +48,7 @@ const GraphVisualisationManager = () => {
         forceUpdate();
     }
 
-    return (<GraphVisualisation vertices={vertices} edges={edges} width={1000} height={1000} addChildCallback={addChildren} />);
+    return (<GraphVisualisation vertices={vertices} edges={edges} width={1400} height={800} addChildCallback={addChildren} />);
 }
 
 export default GraphVisualisationManager;
