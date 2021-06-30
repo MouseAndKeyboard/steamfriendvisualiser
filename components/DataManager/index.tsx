@@ -3,10 +3,21 @@ import styles from './index.module.css';
 
 const DataManager = () => {
     return (<div className={styles.main}>
-        <h2>Steam Friend Explorer</h2>
+        <h1>Steam Friend Explorer</h1>
         <p>Visualise and interact with your Steam friend network.</p>
         <br />
-        <h3>Controls</h3>
+        <h2>Add your Steam account</h2>
+        <p>
+            Enter your <a href="https://steamid.io/">SteamID64</a> (<code>76561198156591174</code>) and press {"\"Add\""}.
+        </p>
+
+        <label htmlFor="userId">Your SteamID</label>
+        <br />
+        <input id="userIdInput" name="userId" value="" placeholder="76561198156591174" />
+        <button>Add</button>
+        <p></p>
+        <br />
+        <h2>Controls</h2>
         <ul>
             <li className={styles.listElem}><code>Double Click</code> to add that node{'\''}s friends to the graph.</li>
             <li className={styles.listElem}><code>Click and Drag</code> to move nodes around.</li>
