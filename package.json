@@ -22,8 +22,28 @@
     "@types/node": "^12.12.21",
     "@types/react": "^17.0.2",
     "@types/react-dom": "^17.0.1",
+    "babel-eslint": "^10.1.0",
     "eslint": "^7.29.0",
-    "eslint-config-next": "^11.0.1"
+    "eslint-config-next": "^11.0.1",
+    "eslint-plugin-react": "^7.24.0"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "sourceType": "module"
+    },
+    "rules": {
+      "indent": [
+        "error",
+        4
+      ]
+    },
+    "extends": [
+      "plugin:react/recommended"
+    ],
+    "globals": {
+      "fetch": false
+    }
+  }
 }

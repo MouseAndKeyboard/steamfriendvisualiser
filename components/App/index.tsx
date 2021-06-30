@@ -1,16 +1,17 @@
-import GraphVisualisationManager from '../GraphVisualisationManager'
-import DataManager from '../DataManager'
+import React from 'react';
+import GraphVisualisationManager from '../GraphVisualisationManager';
+import DataManager from '../DataManager';
 
-import styles from './index.module.css'
+import styles from './index.module.css';
 
-const app = (props) => {
+const app = () => {
     return (
         <div className={styles.main}>
             <DataManager />
             <GraphVisualisationManager />
         </div>
     );
-}
+};
 
 
 

@@ -1,11 +1,16 @@
-import * as d3 from 'd3'
-import { useD3 } from '../../hooks/useD3'
+import React from 'react';
+import * as d3 from 'd3';
+import { useD3 } from '../../hooks/useD3';
+import { steamUser, relationship } from '../GraphVisualisationManager';
+import styles from './GraphVisualisation.module.css';
 
-import styles from "./GraphVisualisation.module.css"
 
-
-const GraphVisualisation = ({vertices, edges, width, height, addChildCallback}) => {
-
+const GraphVisualisation = ({vertices, edges, width, height, addChildCallback}:
+                            {vertices: steamUser[],
+                             edges: relationship[],
+                             width: number,
+                             height: number,
+                             addChildCallback: any}) => {
     const radius = 17.5;
 
     const ref = useD3(
@@ -16,41 +21,42 @@ const GraphVisualisation = ({vertices, edges, width, height, addChildCallback}) 
             const nodes = vertices.map(d => Object.create(d));
 
             const simulation = d3.forceSimulation(nodes)
-                                 .force('link', d3.forceLink(links).id(d => d.id).strength(1))
-                                 .force('charge', d3.forceManyBody().strength(-50))
-                                 .force('center', d3.forceCenter(width / 2, height / 2))
+            // @ts-ignore
+                .force('link', d3.forceLink(links).id(d => d.id).strength(1))
+                .force('charge', d3.forceManyBody().strength(-50))
+                .force('center', d3.forceCenter(width / 2, height / 2));
 
             const link = svg.append('g')
-                            .attr('stroke', '#fff')
-                            .attr('stroke-opacity', 0.6)
-                            .selectAll('line')
-                            .data(links)
-                            .join('line')
-                            .attr('stroke-width', 2)
+                .attr('stroke', '#fff')
+                .attr('stroke-opacity', 0.6)
+                .selectAll('line')
+                .data(links)
+                .join('line')
+                .attr('stroke-width', 2);
 
             const node = svg.append('g')
-                            .attr('stroke', '#fff')
-                            .attr('stroke-width', 1.5)
-                            .selectAll('circle')
-                            .data(nodes)
-                            .join('circle')
-                            .attr('r', radius)
-                            .attr('fill', '#aaa')
-                            .call(drag(simulation))
-                            .on('dblclick', d => {
-                                addChildCallback(d.srcElement.__data__.id);
-                            });
+                .attr('stroke', '#fff')
+                .attr('stroke-width', 1.5)
+                .selectAll('circle')
+                .data(nodes)
+                .join('circle')
+                .attr('r', radius)
+                .attr('fill', '#aaa')
+                .call(drag(simulation))
+                .on('dblclick', d => {
+                    addChildCallback(d.srcElement.__data__.id);
+                });
 
             node.append('title')
-                            .text(d => d.id);
+                .text(d => d.id);
 
-            node.append("circle")
-                .attr("cx", 12.5)
-                .attr("cy", 0)
-                .attr("r", 17.5)
-                .style("fill", "transparent")
-                .style("stroke", "black")
-                .style("stroke-width", "2px");
+            node.append('circle')
+                .attr('cx', 12.5)
+                .attr('cy', 0)
+                .attr('r', 17.5)
+                .style('fill', 'transparent')
+                .style('stroke', 'black')
+                .style('stroke-width', '2px');
 
             simulation.on('tick', () => {
                 link.attr('x1', d => Math.max(radius, Math.min(width - radius, d.source.x)))
@@ -84,12 +90,12 @@ const GraphVisualisation = ({vertices, edges, width, height, addChildCallback}) 
         }
 
         return d3.drag()
-                 .on("start", dragstarted)
-                 .on("drag", dragged)
-                 .on("end", dragended);
-}
+            .on('start', dragstarted)
+            .on('drag', dragged)
+            .on('end', dragended);
+    };
 
     return (<svg className={styles.mainView} ref={ref}></svg>);
-}
+};
 
 export default GraphVisualisation;

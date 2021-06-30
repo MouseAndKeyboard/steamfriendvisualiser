@@ -13,7 +13,7 @@ export default async function handler({ query: {id} }, res) {
             return {
                 id: o.steamid,
                 friend_since: o.friend_since
-            }
+            };
         });
         res.status(200).json(vertexData);
     } catch (err) {

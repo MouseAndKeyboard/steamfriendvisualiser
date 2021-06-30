@@ -1,5 +1,6 @@
-import AppPage from '../components/App'
+import React from 'react';
+import AppPage from '../components/App';
 
-const app = (props) => <AppPage/>
+const app = () => <AppPage/>;
 
 export default app;

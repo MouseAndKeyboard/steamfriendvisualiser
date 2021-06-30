@@ -1,28 +1,28 @@
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback } from 'react';
 
-import GraphVisualisation from './Visualisations/GraphVisualisation'
+import GraphVisualisation from './Visualisations/GraphVisualisation';
 
 const GraphVisualisationManager = () => {
     const [vertices, setVertices] = useState<steamUser[]>([]);
     const [edges, setEdges] = useState<relationship[]>([]);
 
-    const [, updateState] = useState();
+    const [, updateState] = useState<any>();
     const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(() => {
-        const initialVertexData = [{"id":"76561198195623567"}]
+        const initialVertexData = [{'id':'76561198195623567'}];
         setVertices(initialVertexData);
 
         const initialEdgeData = [];
         setEdges(initialEdgeData);
 
-    }, [])
+    }, []);
 
     const addChildren = async (steamid: String) => {
         const response = await fetch(`../api/steamuser?id=${steamid}`);
-        const data = await response.json()
-        const justVertices = data.map(o => {return { id: o.id } });
-        const edges = data.map(o => {return { source: steamid, target: o.id, note: 'friend' }});
+        const data = await response.json();
+        const justVertices = data.map(o => {return { id: o.id }; });
+        const edges = data.map(o => {return { source: steamid, target: o.id, note: 'friend' };});
         setVertices((oldVertices) => {
             let newArray = oldVertices;
             justVertices.forEach(v => {
@@ -46,10 +46,10 @@ const GraphVisualisationManager = () => {
         });
 
         forceUpdate();
-    }
+    };
 
     return (<GraphVisualisation vertices={vertices} edges={edges} width={1400} height={800} addChildCallback={addChildren} />);
-}
+};
 
 export default GraphVisualisationManager;
 
