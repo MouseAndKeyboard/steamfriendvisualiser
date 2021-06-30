@@ -1,19 +1,14 @@
 import React, { useState, useCallback } from 'react';
 import styles from './index.module.css';
 
-const DataManager = () => {
+const DataManager = ({addSteamid}) => {
     const [userSteamid, setUserSteamid] = useState('');
 
     const handleChange = (e) => {
         setUserSteamid(e.target.value);
     };
 
-    const addSteamid = useCallback(
-        () => {
-
-        },
-        [userSteamid]
-    )
+    const handleClick = useCallback(() => addSteamid(userSteamid), [userSteamid]);
 
     return (<div className={styles.main}>
         <h1>Steam Friend Explorer</h1>
@@ -28,7 +23,7 @@ const DataManager = () => {
             <label htmlFor="userId">Your SteamID</label>
             <br />
             <input id="userIdInput" name="userId" value={userSteamid} onChange={handleChange} placeholder="76561198156591174" />
-            <button>Add</button>
+            <button onClick={handleClick}>Add</button>
         </div>
         <h2>Controls</h2>
         <ul>
