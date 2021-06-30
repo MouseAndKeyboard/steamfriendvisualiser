@@ -5,6 +5,41 @@
     color: white;
 }
 
+.customfield {
+    font-size: 22px;
+    position: relative;
+}
+
+.customfield > input {
+    border: none;
+    -webkit-appearance: none;
+    -ms-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background: #261f3d;
+    color: white;
+    padding: 12px;
+    border-radius: 3px;
+    width: 250px;
+    height: 1rem;
+}
+
+.customfield > button {
+    display: inline-block;
+    border: 0;
+    background: #6851b0;
+    border-radius: 2px;
+    color: white;
+    width: 55px;
+    height: 2.2rem;
+}
+
+.customfield > button:hover {
+    cursor: pointer;
+    text-shadow: 0 0 2em rgba(255,255,255,1);
+    background-color: #a88cff;
+}
+
 .listElem {
     margin: 1em 0;
 }
