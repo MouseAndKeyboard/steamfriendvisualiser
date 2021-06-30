@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import styles from './index.module.css';
 
-const DataManager = ({addSteamid}) => {
+const DataManager = ({addSteamid}: {addSteamid: any}) => {
     const [userSteamid, setUserSteamid] = useState('');
 
     const handleChange = (e) => {
@@ -16,13 +16,13 @@ const DataManager = ({addSteamid}) => {
         <br />
         <h2>Add your Steam account</h2>
         <p>
-            Enter your <a href="https://steamid.io/">SteamID64</a> (<code>76561198156591174</code>) and press {"\"Add\""}.
+            Enter your <a href='https://steamid.io/'>SteamID64</a> (<code>76561198156591174</code>) and press {'"Add"'}.
         </p>
 
         <div className={styles.customfield}>
-            <label htmlFor="userId">Your SteamID</label>
+            <label htmlFor='userId'>Your SteamID</label>
             <br />
-            <input id="userIdInput" name="userId" value={userSteamid} onChange={handleChange} placeholder="76561198156591174" />
+            <input id='userIdInput' name='userId' value={userSteamid} onChange={handleChange} placeholder='76561198156591174' />
             <button onClick={handleClick}>Add</button>
         </div>
         <h2>Controls</h2>

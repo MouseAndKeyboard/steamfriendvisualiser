@@ -57,15 +57,15 @@ const app = () => {
         forceUpdate();
     };
 
-    const addSteamid = useCallback((steamid) => {
+    const addSteamid = (steamid) => {
         appendVertex([{ id: steamid }]);
         forceUpdate();
-    });
+    };
 
 
     return (
         <div className={styles.main}>
-            <DataManager className={styles.infopanel} addSteamid={addSteamid} />
+            <DataManager addSteamid={addSteamid} />
             <GraphVisualisationManager
                 vertices={vertices}
                 edges={edges}

@@ -1,13 +1,17 @@
+import React from 'react';
 import GraphVisualisation from './Visualisations/GraphVisualisation';
 
-const GraphVisualisationManager = ({vertices, edges, addChildren}) => {
-
+const GraphVisualisationManager = ({vertices, edges, addChildren}: {
+    vertices: steamUser[],
+    edges: relationship[],
+    addChildren: any
+}) => {
     return (<GraphVisualisation
-            vertices={vertices}
-            edges={edges}
-            width={1400}
-            height={800}
-            addChildCallback={addChildren} />);
+        vertices={vertices}
+        edges={edges}
+        width={1400}
+        height={800}
+        addChildCallback={addChildren} />);
 };
 
 export default GraphVisualisationManager;
